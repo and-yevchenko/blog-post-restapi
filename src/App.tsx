@@ -1,9 +1,12 @@
 import './App.css';
+import { MyPosts } from './pages/my-posts/MyPosts';
 
 function App() {
-    return <>
-    
-    </>;
+    return (
+        <>
+            <MyPosts />
+        </>
+    )
 }
 
 export default App;
