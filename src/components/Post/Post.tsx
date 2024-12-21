@@ -1,3 +1,4 @@
+import { User } from '../User/User';
 import './Post.css';
 
 export const Post = () => {
@@ -8,10 +9,7 @@ export const Post = () => {
         <div className='post'>
 
             <div className='post-head'>
-                <div className='user'>
-                    <img src="/" alt="user" className='user-photo'/>
-                    <span className='user-nickname'>and.yevchenko</span>
-                </div>
+                <User />
                 <div className='more-options'>
                     <span>Edit</span>
                     <span>Delete</span>
