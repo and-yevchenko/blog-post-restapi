@@ -1,3 +1,4 @@
+import { MoreOptions } from '../MoreOptions/MoreOptions';
 import { User } from '../User/User';
 import './Post.css';
 
@@ -10,10 +11,7 @@ export const Post = () => {
 
             <div className='post-head'>
                 <User />
-                <div className='more-options'>
-                    <span>Edit</span>
-                    <span>Delete</span>
-                </div>
+                <MoreOptions />
             </div>
 
             <div className='post-main'>
