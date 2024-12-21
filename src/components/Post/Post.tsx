@@ -2,6 +2,8 @@ import './Post.css';
 
 export const Post = () => {
 
+
+    //TODO
     return (
         <div className='post'>
 
@@ -22,7 +24,7 @@ export const Post = () => {
             </div>
 
             <div className='post-foot'>
-                <div>
+                <div className='post-foot-panelle'> {/*TODO*/}
                     <div>
                         <button type='button'>Like</button>
                         <button type='button'>Comment</button>
@@ -37,16 +39,16 @@ export const Post = () => {
                                 <span className='user-nickname'>and.yevchenko</span>
                             </div>
                             <p>Lorem ipsum dolor sit amet.</p>
-                            <span>Reply</span>
+                            {/* <span>Reply</span>  TODO*/}
                         </li>
                     </ul>
-                    <form action="">
+                    <form action="" className='add-comment'>
                         <input type="text" name="" id="" placeholder='Write a comment'/>
                         <button type='submit'>Comment</button>
                     </form>
                 </div>
             </div>
-            
+
         </div>
     )
 }
