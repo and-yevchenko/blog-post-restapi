@@ -1,16 +1,11 @@
-import { Checkbox, IconButton, Tooltip } from '@mui/material';
-import './PostPanel.css';
-import {
-    Bookmark,
-    BookmarkBorder,
-    ChatBubbleOutline,
-    Favorite,
-    FavoriteBorder,
-} from '@mui/icons-material';
+import { Box, Checkbox, IconButton, Tooltip } from '@mui/material';
+import { Bookmark, BookmarkBorder, ChatBubbleOutline, Favorite, FavoriteBorder } from '@mui/icons-material';
 
 export const PostPanel = () => {
     return (
-        <div className="post-panel">
+        <Box
+            sx={{ display: 'flex', alignItems: 'center', padding: '0.5rem', gap: '0.5rem' }}
+        >
             <Tooltip title="Like">
                 <Checkbox
                     aria-label="like"
@@ -28,8 +23,9 @@ export const PostPanel = () => {
                     aria-label="favorites"
                     icon={<BookmarkBorder />}
                     checkedIcon={<Bookmark color="action" />}
+                    sx={{ marginLeft: 'auto' }}
                 />
             </Tooltip>
-        </div>
+        </Box>
     );
 };
