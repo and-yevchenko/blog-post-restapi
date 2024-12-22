@@ -7,9 +7,11 @@ const options = ['Edit', 'Remove'];
 export const MoreOptions = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event: BaseSyntheticEvent) => {
         setAnchorEl(event.currentTarget);
     };
+    
     const handleClose = () => {
         setAnchorEl(null);
     };
