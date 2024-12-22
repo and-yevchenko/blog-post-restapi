@@ -1,3 +1,4 @@
+import { AddComment } from '../AddComment/AddComment';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 import { PostPanel } from '../PostPanel/PostPanel';
 import { User } from '../User/User';
@@ -33,10 +34,7 @@ export const Post = () => {
                             {/* <span>Reply</span>  TODO*/}
                         </li>
                     </ul>
-                    <form action="" className='add-comment'>
-                        <input type="text" name="" id="" placeholder='Write a comment'/>
-                        <button type='submit'>Comment</button>
-                    </form>
+                    <AddComment />
                 </div>
             </div>
 
