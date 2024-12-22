@@ -1,4 +1,5 @@
 import { MoreOptions } from '../MoreOptions/MoreOptions';
+import { PostPanel } from '../PostPanel/PostPanel';
 import { User } from '../User/User';
 import './Post.css';
 
@@ -20,13 +21,7 @@ export const Post = () => {
             </div>
 
             <div className='post-foot'>
-                <div className='post-foot-panelle'> {/*TODO*/}
-                    <div>
-                        <button type='button'>Like</button>
-                        <button type='button'>Comment</button>
-                    </div>
-                    <div className='post-likes'>10 likes</div>
-                </div>
+                <PostPanel />
                 <div>
                     <ul className='post-comments-list'>
                         <li className='post-comments-item'>

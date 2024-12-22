@@ -24,14 +24,6 @@
     flex-direction: column;
 }
 
-.post-foot-panelle { /*TODO*/
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-}
-
 .post-comments-list { /*TODO*/
     padding: 1rem;
     border-top: 1px solid hsla(0, 0%, 90%, 0.5);
