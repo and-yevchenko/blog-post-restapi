@@ -20,7 +20,7 @@ export const Post = () => {
 
             <div className='post-main'>
                 <PostText />
-                <img src="/witcher.jpg" alt="witcher" width="100%"/>
+                <img className='post-img' src="/witcher.jpg" alt="witcher" width="100%"/>
             </div>
 
             <div className='post-foot'>
