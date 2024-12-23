@@ -2,6 +2,7 @@ import { AddComment } from '../AddComment/AddComment';
 import { CommentsList } from '../CommentsList/CommentsList';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 import { PostPanel } from '../PostPanel/PostPanel';
+import { PostText } from '../PostText/PostText';
 import { User } from '../User/User';
 import './Post.css';
 
@@ -18,16 +19,14 @@ export const Post = () => {
             </div>
 
             <div className='post-main'>
-                <div className='post-text'></div>
+                <PostText />
                 <div className='post-img'></div>
             </div>
 
             <div className='post-foot'>
                 <PostPanel />
-                <div>
-                    <CommentsList />
-                    <AddComment />
-                </div>
+                <CommentsList />
+                <AddComment />
             </div>
 
         </div>
