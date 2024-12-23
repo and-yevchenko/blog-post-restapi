@@ -14,9 +14,7 @@
 }
 
 .post-main {
-    width: 600px;
-    height: 600px;
-    background-color: rgb(75, 75, 75);
+    height: auto;
 }
 
 .post-foot {
