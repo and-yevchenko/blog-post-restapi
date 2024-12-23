@@ -1,5 +1,6 @@
 import { Send } from '@mui/icons-material';
 import { IconButton, TextField } from '@mui/material';
+import './AddComment.css';
 
 export const AddComment = () => {
     return (
