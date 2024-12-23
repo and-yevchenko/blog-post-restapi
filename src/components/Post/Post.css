@@ -24,23 +24,10 @@
     flex-direction: column;
 }
 
-.post-comments-list { /*TODO*/
-    padding: 1rem;
-    border-top: 1px solid hsla(0, 0%, 90%, 0.5);
-}
-
 .add-comment { /*TODO*/
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
     border-radius: 1rem;
-}
-
-.post-comments-item { /*TODO*/
-    font-size: 0.85rem;
-    display: flex;
-    align-items: start;
-    flex-direction: column;
-    gap: 0.3rem;
 }

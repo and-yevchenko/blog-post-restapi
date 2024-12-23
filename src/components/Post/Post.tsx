@@ -1,4 +1,5 @@
 import { AddComment } from '../AddComment/AddComment';
+import { CommentsList } from '../CommentsList/CommentsList';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 import { PostPanel } from '../PostPanel/PostPanel';
 import { User } from '../User/User';
@@ -24,16 +25,7 @@ export const Post = () => {
             <div className='post-foot'>
                 <PostPanel />
                 <div>
-                    <ul className='post-comments-list'>
-                        <li className='post-comments-item'>
-                            <div>
-                                <img src="/" alt="user" className='user-photo'/>
-                                <span className='user-nickname'>and.yevchenko</span>
-                            </div>
-                            <p>Lorem ipsum dolor sit amet.</p>
-                            {/* <span>Reply</span>  TODO*/}
-                        </li>
-                    </ul>
+                    <CommentsList />
                     <AddComment />
                 </div>
             </div>
