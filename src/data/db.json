@@ -2,7 +2,7 @@
     "posts": [
         {
             "id": "4bdc9486",
-            "data": "2024-11-26",
+            "date": "2024-11-26",
             "author": "and.yevchenko",
             "image": "witcher.jpg",
             "comments": [
@@ -24,13 +24,13 @@
         },
         {
             "id": "b158aeca",
-            "data": "2024-12-09",
+            "date": "2024-12-09",
             "author": "and.yevchenko",
             "text": "If there’s a game that defines epic storytelling and immersive gameplay, The Witcher 3: Wild Hunt stands tall among the greatest. Released in 2015 by CD Projekt Red, this RPG is more than a game—it's an unforgettable journey through a world brimming with danger, beauty, and tough choices."
         },
         {
             "id": "6f72671b",
-            "data": "2024-12-16",
+            "date": "2024-12-16",
             "author": "and.yevchenko",
             "text": "The Witcher IV is a single-player, open-world RPG from CD PROJEKT RED. At the start of a new saga, players take on the role of Ciri, a professional monster slayer, and embark on a journey through a brutal dark-fantasy world. Powered by Unreal Engine 5, it aims to be the most immersive and ambitious open-world Witcher game to date.",
             "image": "witcher-ciri.jpg"
