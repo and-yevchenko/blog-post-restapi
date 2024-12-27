@@ -10,7 +10,7 @@ export const MyPosts = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        sendApiRequest<IPost[]>('GET', 'http://localhost:3000/posts')
+        sendApiRequest<IPost[]>('GET', '/posts')
             .then((data) => {
                 setData(data);
             })
