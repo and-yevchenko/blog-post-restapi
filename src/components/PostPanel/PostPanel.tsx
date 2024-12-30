@@ -1,7 +1,19 @@
 import { Box, Checkbox, IconButton, Tooltip } from '@mui/material';
 import { Bookmark, BookmarkBorder, ChatBubbleOutline, Favorite, FavoriteBorder } from '@mui/icons-material';
+import React from 'react';
 
-export const PostPanel = () => {
+interface PostPanelProps {
+    likes?: Array<string>;
+    author?: string;
+    focusElement?: React.RefObject<HTMLFormElement>;
+}
+
+export const PostPanel: React.FC<PostPanelProps> = ({ likes, author, focusElement }) => {
+
+    const handleComment = () => {
+        focusElement?.current?.focus()
+    }
+
     return (
         <Box
             sx={{ display: 'flex', alignItems: 'center', padding: '0.5rem', gap: '0.5rem' }}
@@ -10,11 +22,12 @@ export const PostPanel = () => {
                 <Checkbox
                     aria-label="like"
                     icon={<FavoriteBorder />}
+                    checked={likes?.includes(author as string)} //TODO
                     checkedIcon={<Favorite sx={{ color: '#ff0000d3' }} />}
                 />
             </Tooltip>
             <Tooltip title="Comment">
-                <IconButton aria-label="comment">
+                <IconButton aria-label="comment" onClick={handleComment}>
                     <ChatBubbleOutline />
                 </IconButton>
             </Tooltip>

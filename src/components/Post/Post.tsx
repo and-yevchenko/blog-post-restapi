@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { IPost } from '../../data/_type';
 import { AddComment } from '../AddComment/AddComment';
 import { CommentsList } from '../CommentsList/CommentsList';
@@ -12,6 +13,9 @@ interface PostProps {
 }
 
 export const Post: React.FC<PostProps> = ({ post }) => {
+
+    const refForm = useRef<HTMLFormElement>(null);
+
     return (
         <div className="post">
             <div className="post-head">
@@ -23,9 +27,9 @@ export const Post: React.FC<PostProps> = ({ post }) => {
                 {post.image && <img className="post-img" src={post.image}alt="post" width="100%"/>}
             </div>
             <div className="post-foot">
-                <PostPanel />
+                <PostPanel {...(post.likes && { likes: post.likes })} author={post.author} focusElement={refForm}/>
                 <CommentsList />
-                <AddComment />
+                <AddComment ref={refForm}/>
             </div>
         </div>
     );
