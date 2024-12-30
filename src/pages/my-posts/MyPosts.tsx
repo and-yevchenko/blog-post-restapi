@@ -20,7 +20,7 @@ export const MyPosts = () => {
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [data]);
 
     if (loading) return <CircularProgress />;
     if (error) return <Typography variant='h5' color='error'>{error}</Typography>;

@@ -1,19 +1,37 @@
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import { BaseSyntheticEvent, useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { IPost } from '../../data/_type';
+import { sendApiRequest } from '../../api/utils/request';
+
+interface MoreOptionsProps {
+    post: IPost;
+}
 
 const options = ['Edit', 'Remove'];
 
-export const MoreOptions = () => {
+export const MoreOptions: React.FC<MoreOptionsProps> = ({ post }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event: BaseSyntheticEvent) => {
+    const onOpenOptions = (event: BaseSyntheticEvent) => {
         setAnchorEl(event.currentTarget);
     };
     
-    const handleClose = () => {
+    const onClickOption = (e: BaseSyntheticEvent) => {
         setAnchorEl(null);
+        console.log(e.target.innerText);
+        if (e.target.innerText === 'Edit') {
+            console.log('Edit');
+        } else if (e.target.innerText === 'Remove') {
+            sendApiRequest<IPost[]>('DELETE', `/posts/${post.id}`)
+                .then(() => {
+                    console.log('post removed');
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                });
+        }
     };
 
     return (
@@ -24,7 +42,7 @@ export const MoreOptions = () => {
                 aria-controls={open ? 'long-menu' : undefined}
                 aria-expanded={open ? 'true' : undefined}
                 aria-haspopup="true"
-                onClick={handleClick}
+                onClick={onOpenOptions}
             >
                 <MoreVertIcon />
             </IconButton>
@@ -35,12 +53,12 @@ export const MoreOptions = () => {
                 }}
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={onClickOption}
             >
                 {options.map((option) => (
                     <MenuItem
                         key={option}
-                        onClick={handleClose}
+                        onClick={onClickOption}
                     >
                         {option}
                     </MenuItem>

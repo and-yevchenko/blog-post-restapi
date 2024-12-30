@@ -20,7 +20,7 @@ export const Post: React.FC<PostProps> = ({ post }) => {
         <div className="post">
             <div className="post-head">
                 <User />
-                <MoreOptions />
+                <MoreOptions post={post}/>
             </div>
             <div className="post-main">
                 {post.text && <PostText text={post.text} maxLength={200} />}
