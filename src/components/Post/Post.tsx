@@ -1,3 +1,4 @@
+import { IPost } from '../../data/_type';
 import { AddComment } from '../AddComment/AddComment';
 import { CommentsList } from '../CommentsList/CommentsList';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
@@ -6,23 +7,26 @@ import { PostText } from '../PostText/PostText';
 import { User } from '../User/User';
 import './Post.css';
 
-export const Post = () => {
-//TODO
+interface PostProps {
+    post: IPost;
+}
+
+export const Post: React.FC<PostProps> = ({ post }) => {
     return (
-        <div className='post'>
-            <div className='post-head'>
+        <div className="post">
+            <div className="post-head">
                 <User />
                 <MoreOptions />
             </div>
-            <div className='post-main'>
-                <PostText />
-                <img className='post-img' src="/witcher.jpg" alt="witcher" width="100%"/>
+            <div className="post-main">
+                {post.text && <PostText text={post.text} maxLength={200} />}
+                {post.image && <img className="post-img" src={post.image}alt="post" width="100%"/>}
             </div>
-            <div className='post-foot'>
+            <div className="post-foot">
                 <PostPanel />
                 <CommentsList />
                 <AddComment />
             </div>
         </div>
-    )
-}
+    );
+};

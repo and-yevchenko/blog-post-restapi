@@ -28,7 +28,7 @@ export const MyPosts = () => {
     return (
         <div>
             {data.map((post: IPost) => (
-                <Post key={post.id} />
+                <Post key={post.id} post={post}/>
             ))}
         </div>
     );
