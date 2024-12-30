@@ -9,7 +9,7 @@ export interface IPost {
     likes?: Array<string>;
 }
 
-interface IComment {
+export interface IComment {
     id: string;
     nickname: string;
     comment: string;
