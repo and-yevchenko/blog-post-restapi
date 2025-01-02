@@ -27,7 +27,7 @@ export const Post: React.FC<PostProps> = ({ post }) => {
                 {post.image && <img className="post-img" src={post.image}alt="post" width="100%"/>}
             </div>
             <div className="post-foot">
-                <PostPanel {...(post.likes && { likes: post.likes })} author={post.author} focusElement={refForm}/>
+                <PostPanel post={post} focusElement={refForm}/>
                 {post.comments && <CommentsList {...(post.comments && { comments: post.comments })}/>}
                 <AddComment ref={refForm}/>
             </div>

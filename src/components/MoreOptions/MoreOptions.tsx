@@ -21,7 +21,7 @@ export const MoreOptions: React.FC<MoreOptionsProps> = ({ post }) => {
     const onClickOption = (e: BaseSyntheticEvent) => {
         setAnchorEl(null);
         console.log(e.target.innerText);
-        if (e.target.innerText === 'Edit') {
+        if (e.target.innerText === 'Edit') { //TODO
             console.log('Edit');
         } else if (e.target.innerText === 'Remove') {
             sendApiRequest<IPost[]>('DELETE', `/posts/${post.id}`)

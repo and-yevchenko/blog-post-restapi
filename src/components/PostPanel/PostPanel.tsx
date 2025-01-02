@@ -1,14 +1,27 @@
 import { Box, Checkbox, IconButton, Tooltip } from '@mui/material';
 import { Bookmark, BookmarkBorder, ChatBubbleOutline, Favorite, FavoriteBorder } from '@mui/icons-material';
-import React from 'react';
+import React, { BaseSyntheticEvent } from 'react';
+import { sendApiRequest } from '../../api/utils/request';
+import { IPost } from '../../data/_type';
 
 interface PostPanelProps {
-    likes?: Array<string>;
-    author?: string;
+    post: IPost;
     focusElement?: React.RefObject<HTMLFormElement>;
 }
 
-export const PostPanel: React.FC<PostPanelProps> = ({ likes, author, focusElement }) => {
+export const PostPanel: React.FC<PostPanelProps> = ({ post, focusElement }) => {
+
+    const handleLike = (e: BaseSyntheticEvent) => { //TODO
+        if(e.target.checked) {
+            sendApiRequest<IPost[]>('PATCH', `/posts/${post.id}`, {
+                likes: [...(post.likes ?? []), post.author as string]
+            })
+        } else {
+            sendApiRequest<IPost[]>('PATCH', `/posts/${post.id}`, {
+                likes: post.likes ? post.likes.filter((like) => like !== post.author) : []
+            })
+        }
+    }
 
     const handleComment = () => {
         focusElement?.current?.focus()
@@ -22,8 +35,9 @@ export const PostPanel: React.FC<PostPanelProps> = ({ likes, author, focusElemen
                 <Checkbox
                     aria-label="like"
                     icon={<FavoriteBorder />}
-                    checked={likes?.includes(author as string)} //TODO
+                    checked={post.likes?.includes(post.author as string) ?? false}
                     checkedIcon={<Favorite sx={{ color: '#ff0000d3' }} />}
+                    onChange={handleLike}
                 />
             </Tooltip>
             <Tooltip title="Comment">
