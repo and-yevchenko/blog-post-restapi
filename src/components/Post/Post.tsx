@@ -29,7 +29,7 @@ export const Post: React.FC<PostProps> = ({ post }) => {
             <div className="post-foot">
                 <PostPanel post={post} focusElement={refForm}/>
                 {post.comments && <CommentsList {...(post.comments && { comments: post.comments })}/>}
-                <AddComment ref={refForm}/>
+                <AddComment post={post} ref={refForm}/>
             </div>
         </div>
     );
