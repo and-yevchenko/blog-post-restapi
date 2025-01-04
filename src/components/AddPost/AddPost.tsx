@@ -43,7 +43,6 @@ export const AddPost = () => {
                 <Typography variant="caption" color="textSecondary">Max size: 5mb</Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                <Button color="primary">Cancel</Button>
                 <Button variant="contained" color="primary" type="submit">Publish</Button>
             </Box>
         </form>

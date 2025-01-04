@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Post } from '../../components/Post/Post';
 import { sendApiRequest } from '../../api/utils/request';
 import { IPost } from '../../data/_type';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import { AddPost } from '../../components/AddPost/AddPost';
+import { Close } from '@mui/icons-material';
 
 export const MyPosts = () => {
+    const [openEditPost, setOpenEditPost] = useState<boolean>(false);
     const [data, setData] = useState<IPost[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -32,8 +34,33 @@ export const MyPosts = () => {
                 <Typography variant='h6' align='left'>New post</Typography>
                 <AddPost />
             </Box>
+            <Dialog
+                open={openEditPost}
+                onClose={() => setOpenEditPost(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                fullWidth={true}
+                maxWidth='sm'
+            >
+                <DialogTitle>Edit post</DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={() => setOpenEditPost(false)}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
+                <DialogContent>
+                    <AddPost />
+                </DialogContent>
+            </Dialog>
             {data.map((post: IPost) => (
-                <Post key={post.id} post={post}/>
+                <Post key={post.id} post={post} setOpenEditPost={setOpenEditPost}/>
             ))}
         </Box>
     );
