@@ -7,11 +7,12 @@ import { sendApiRequest } from '../../api/utils/request';
 interface MoreOptionsProps {
     post: IPost;
     setOpenEditPost: (value: boolean) => void;
+    setDataEditPost: (value: IPost | null) => void;
 }
 
 const options = ['Edit', 'Remove'];
 
-export const MoreOptions: React.FC<MoreOptionsProps> = ({ post, setOpenEditPost }) => {
+export const MoreOptions: React.FC<MoreOptionsProps> = ({ post, setOpenEditPost, setDataEditPost }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -24,6 +25,7 @@ export const MoreOptions: React.FC<MoreOptionsProps> = ({ post, setOpenEditPost 
         console.log(e.target.innerText);
         if (e.target.innerText === 'Edit') { //TODO
             setOpenEditPost(true);
+            setDataEditPost(post);
         } else if (e.target.innerText === 'Remove') {
             sendApiRequest<IPost[]>('DELETE', `/posts/${post.id}`)
                 .then(() => {
@@ -49,9 +51,7 @@ export const MoreOptions: React.FC<MoreOptionsProps> = ({ post, setOpenEditPost 
             </IconButton>
             <Menu
                 id="long-menu"
-                MenuListProps={{
-                    'aria-labelledby': 'long-button',
-                }}
+                MenuListProps={{ 'aria-labelledby': 'long-button' }}
                 anchorEl={anchorEl}
                 open={open}
                 onClose={onClickOption}

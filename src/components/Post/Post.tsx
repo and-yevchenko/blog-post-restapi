@@ -11,9 +11,10 @@ import './Post.css';
 interface PostProps {
     post: IPost;
     setOpenEditPost: (value: boolean) => void;
+    setDataEditPost: (value: IPost | null) => void;
 }
 
-export const Post: React.FC<PostProps> = ({ post, setOpenEditPost }) => {
+export const Post: React.FC<PostProps> = ({ post, setOpenEditPost, setDataEditPost }) => {
 
     const refForm = useRef<HTMLFormElement>(null);
 
@@ -21,7 +22,11 @@ export const Post: React.FC<PostProps> = ({ post, setOpenEditPost }) => {
         <div className="post">
             <div className="post-head">
                 <User />
-                <MoreOptions post={post} setOpenEditPost={setOpenEditPost} />
+                <MoreOptions 
+                    post={post} 
+                    setOpenEditPost={setOpenEditPost} 
+                    setDataEditPost={setDataEditPost}
+                />
             </div>
             <div className="post-main">
                 {post.text && <PostText text={post.text} maxLength={200} />}
