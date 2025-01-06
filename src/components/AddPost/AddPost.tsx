@@ -1,6 +1,6 @@
 import { Image } from '@mui/icons-material';
 import { Box, Button, styled, TextField, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActionPostType } from './_type';
 import { IPost } from '../../data/_type';
 import { sendApiRequest } from '../../api/utils/request';
@@ -25,12 +25,25 @@ interface AddPostProps {
     setDataEditPost?: (value: IPost | null) => void;
 }
 
-export const AddPost: React.FC<AddPostProps> = ({
-    action,
-    setOpenEditPost,
-    dataEditPost,
-    setDataEditPost,
-}) => {
+export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataEditPost, setDataEditPost }) => {
+
+    const [imagePost, setImagePost] = useState<string | null>(null)
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        console.log(file.name)
+        const reader = new FileReader();
+        reader.onloadend = () => {
+        setImagePost(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    useEffect(() => {
+        console.log(imagePost)
+    }, [imagePost])
+
     const onPublish = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -43,7 +56,7 @@ export const AddPost: React.FC<AddPostProps> = ({
                     date: new Date().toISOString(),
                     author: 'and.yevchenko',
                     text: textField as string,
-                    image: 'witcher.jpg', //TODO
+                    image: imagePost ? imagePost : null,
                 });
                 break;
             case ActionPostType.EDIT_POST: //TODO
@@ -54,13 +67,14 @@ export const AddPost: React.FC<AddPostProps> = ({
                     text: textField as string,
                     image: 'witcher.jpg', //TODO
                 });
-                if (setOpenEditPost) setOpenEditPost(false);
-                if (setDataEditPost) setDataEditPost(null);
                 break;
-            default:
-                break;
-        }
-
+                default:
+                    break;
+                }
+                
+        if (setOpenEditPost) setOpenEditPost(false);
+        if (setDataEditPost) setDataEditPost(null);
+        if (imagePost) setImagePost(null);
         e.currentTarget.reset();
     };
 
@@ -81,7 +95,7 @@ export const AddPost: React.FC<AddPostProps> = ({
                     Upload image
                     <FileInput
                         type="file"
-                        onChange={(event) => console.log(event.target.files)}
+                        onChange={handleImageChange}
                         multiple
                         defaultValue={dataEditPost?.image}
                     />
