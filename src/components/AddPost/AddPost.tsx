@@ -28,11 +28,12 @@ interface AddPostProps {
 export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataEditPost, setDataEditPost }) => {
 
     const [imagePost, setImagePost] = useState<string | null>(null)
+    const [isImageName, setIsImageName] = useState<string | boolean>(false)
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        console.log(file.name)
+        setIsImageName(file.name) //TODO if name image large
         const reader = new FileReader();
         reader.onloadend = () => {
         setImagePost(reader.result as string);
@@ -75,6 +76,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         if (setOpenEditPost) setOpenEditPost(false);
         if (setDataEditPost) setDataEditPost(null);
         if (imagePost) setImagePost(null);
+        setIsImageName(false)
         e.currentTarget.reset();
     };
 
@@ -100,10 +102,11 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                         defaultValue={dataEditPost?.image}
                     />
                 </Button>
-                {/* TODO load image */}
-                <Typography variant="caption" color="textSecondary">
-                    Max size: 5mb
-                </Typography>
+                {isImageName ? 
+                    <Typography variant="caption" color="primary">{isImageName}</Typography>
+                    : 
+                    <Typography variant="caption" color="textSecondary">Max size: 2mb</Typography>
+                }
             </Box>
             <Box
                 sx={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}
