@@ -30,6 +30,12 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
     const [imagePost, setImagePost] = useState<string | null>(null)
     const [isImageName, setIsImageName] = useState<string | boolean>(false)
 
+    useEffect(() => {
+        if (action === ActionPostType.EDIT_POST) {
+            setIsImageName("Image loaded");
+        }
+    }, [])
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -40,10 +46,6 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         };
         reader.readAsDataURL(file);
     };
-
-    useEffect(() => {
-        console.log(imagePost)
-    }, [imagePost])
 
     const onPublish = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -60,13 +62,13 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                     image: imagePost ? imagePost : null,
                 });
                 break;
-            case ActionPostType.EDIT_POST: //TODO
+            case ActionPostType.EDIT_POST:
                 if (!dataEditPost) return;
                 sendApiRequest<IPost[]>('PATCH', `/posts/${dataEditPost?.id}`, {
                     id: dataEditPost?.id,
                     date: new Date().toISOString(),
                     text: textField as string,
-                    image: 'witcher.jpg', //TODO
+                    image: imagePost ?? dataEditPost.image,
                 });
                 break;
                 default:
@@ -99,7 +101,6 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                         type="file"
                         onChange={handleImageChange}
                         multiple
-                        defaultValue={dataEditPost?.image}
                     />
                 </Button>
                 {isImageName ? 
