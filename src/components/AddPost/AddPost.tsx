@@ -32,7 +32,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
 
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
-            setIsImageName("Image loaded");
+            setIsImageName(dataEditPost?.image ? "Image loaded" : false);
         }
     }, [])
 
