@@ -61,7 +61,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
             setIsImageName("Invalid file")
             return
         }
-        setIsImageName(file.name) //TODO if name image large
+        setIsImageName(file.name.slice(0, 10) + `${file.name.length > 10 ? "..." + file.name.split('.').pop() : ""}`)
         const reader = new FileReader();
         reader.onloadend = () => {
         setImagePost(reader.result as string);
