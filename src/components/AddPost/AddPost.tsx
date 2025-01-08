@@ -1,5 +1,5 @@
 import { Image } from '@mui/icons-material';
-import { Box, Button, styled, TextField, Typography } from '@mui/material';
+import { Box, Button, styled, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ActionPostType } from './_type';
 import { IPost } from '../../data/_type';
@@ -30,8 +30,6 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
     const [imagePost, setImagePost] = useState<string | null>(null)
     const [isImageName, setIsImageName] = useState<string | boolean>(false)
     const [isValidForm, setIsValidForm] = useState<boolean>(false)
-
-    //TODO add func delete image when action === EDIT_POST
 
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
@@ -122,9 +120,11 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                     />
                 </Button>
                 {isImageName ? 
-                    <Typography variant="caption" color="primary">{isImageName}</Typography>
+                    <Tooltip title="Сlick to delete" arrow>
+                        <Typography variant="caption" color="primary" onClick={() => setIsImageName(false)}>{isImageName}</Typography>
+                    </Tooltip>
                     : 
-                    <Typography variant="caption" color="textSecondary">Max size: 2mb</Typography>
+                    <Typography variant="caption" color="textSecondary">Max size: 2mb - Format: jpg, jpeg, png</Typography>
                 }
             </Box>
             <Box
