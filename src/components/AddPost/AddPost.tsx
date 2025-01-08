@@ -1,5 +1,5 @@
 import { Image } from '@mui/icons-material';
-import { Box, Button, styled, TextField, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Button, Snackbar, styled, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ActionPostType } from './_type';
 import { IPost } from '../../data/_type';
@@ -32,6 +32,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
     const [imagePost, setImagePost] = useState<string | null>(null)
     const [isImageName, setIsImageName] = useState<string | boolean>(false)
     const [isValidForm, setIsValidForm] = useState<boolean>(false)
+    const [snackbarSuccessPost, setSnackbarSuccessPost] = useState<boolean>(false)
 
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
@@ -109,46 +110,65 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         if (setDataEditPost) setDataEditPost(null);
         if (imagePost) setImagePost(null);
         setIsImageName(false)
+        setSnackbarSuccessPost(true)
         e.currentTarget.reset();
     }
 
     return (
-        <form className="add-post" onSubmit={onSubmit}>
-            <TextField
-                id="standard-multiline-static"
-                name="text-field"
-                label="Text of your post"
-                multiline
-                rows={3}
-                variant="standard"
-                fullWidth
-                defaultValue={dataEditPost?.text}
-            />
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
-                <Button component="label" role={undefined} tabIndex={-1} startIcon={<Image />}>
-                    Upload image
-                    <FileInput
-                        type="file"
-                        onChange={handleImageChange}
-                        multiple
-                    />
-                </Button>
-                {isImageName ? 
-                    <Tooltip title="Сlick to delete" arrow>
-                        <Typography variant="caption" color="primary" onClick={() => setIsImageName(false)}>{isImageName}</Typography>
-                    </Tooltip>
-                    : 
-                    <Typography variant="caption" color="textSecondary">Max size: 2mb - Format: jpg, jpeg, png</Typography>
-                }
-            </Box>
-            <Box
-                sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}
-            >
-                {!isValidForm && <Typography variant="caption" color="error">Add text or images</Typography>}
-                <Button variant="contained" color="primary" type="submit">
-                    Publish
-                </Button>
-            </Box>
-        </form>
+        <>
+            {action === ActionPostType.ADD_POST &&
+                <Snackbar
+                    open={snackbarSuccessPost}
+                    autoHideDuration={5000}
+                    onClose={() => setSnackbarSuccessPost(false)}
+                >
+                    <Alert
+                        onClose={() => setSnackbarSuccessPost(false)}
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                        >
+                        Here is a gentle confirmation that your action was successful.
+                    </Alert>
+                </Snackbar>
+            }
+            <form className="add-post" onSubmit={onSubmit}>
+                <TextField
+                    id="standard-multiline-static"
+                    name="text-field"
+                    label="Text of your post"
+                    multiline
+                    rows={3}
+                    variant="standard"
+                    fullWidth
+                    defaultValue={dataEditPost?.text}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
+                    <Button component="label" role={undefined} tabIndex={-1} startIcon={<Image />}>
+                        Upload image
+                        <FileInput
+                            type="file"
+                            onChange={handleImageChange}
+                            multiple
+                        />
+                    </Button>
+                    {isImageName ? 
+                        <Tooltip title="Сlick to delete" arrow>
+                            <Typography variant="caption" color="primary" onClick={() => setIsImageName(false)}>{isImageName}</Typography>
+                        </Tooltip>
+                        : 
+                        <Typography variant="caption" color="textSecondary">Max size: 2mb - Format: jpg, jpeg, png</Typography>
+                    }
+                </Box>
+                <Box
+                    sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}
+                >
+                    {!isValidForm && <Typography variant="caption" color="error">Add text or images</Typography>}
+                    <Button variant="contained" color="primary" type="submit">
+                        Publish
+                    </Button>
+                </Box>
+            </form>
+        </>
     );
 };
