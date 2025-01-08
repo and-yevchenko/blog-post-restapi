@@ -29,12 +29,22 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
 
     const [imagePost, setImagePost] = useState<string | null>(null)
     const [isImageName, setIsImageName] = useState<string | boolean>(false)
+    const [isValidForm, setIsValidForm] = useState<boolean>(false)
+
+    //TODO add func delete image when action === EDIT_POST
 
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
             setIsImageName(dataEditPost?.image ? "Image loaded" : false);
         }
     }, [])
+
+    const validateFormPost = (textField: string) => {
+        if (isImageName === false && textField.length < 1) {
+            return false
+        }
+        return true
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -47,10 +57,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         reader.readAsDataURL(file);
     };
 
-    const onPublish = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const textField = formData.get('text-field');
+    const onPublish = (textField: string) => {
 
         switch (action) { //TODO
             case ActionPostType.ADD_POST:
@@ -71,19 +78,30 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                     image: imagePost ?? dataEditPost.image,
                 });
                 break;
-                default:
-                    break;
-                }
-                
+            default:
+                break;
+        }
+    };
+
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const textField = formData.get('text-field');
+
+        setIsValidForm(validateFormPost(textField as string))
+        if (validateFormPost(textField as string)) {
+            onPublish(textField as string)
+        } else return
+
         if (setOpenEditPost) setOpenEditPost(false);
         if (setDataEditPost) setDataEditPost(null);
         if (imagePost) setImagePost(null);
         setIsImageName(false)
         e.currentTarget.reset();
-    };
+    }
 
     return (
-        <form className="add-post" onSubmit={onPublish}>
+        <form className="add-post" onSubmit={onSubmit}>
             <TextField
                 id="standard-multiline-static"
                 name="text-field"
@@ -110,8 +128,9 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                 }
             </Box>
             <Box
-                sx={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}
+                sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}
             >
+                {!isValidForm && <Typography variant="caption" color="error">Add text or images</Typography>}
                 <Button variant="contained" color="primary" type="submit">
                     Publish
                 </Button>
