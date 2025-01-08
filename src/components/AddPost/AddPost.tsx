@@ -25,6 +25,8 @@ interface AddPostProps {
     setDataEditPost?: (value: IPost | null) => void;
 }
 
+// TODO Decompose the logic
+
 export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataEditPost, setDataEditPost }) => {
 
     const [imagePost, setImagePost] = useState<string | null>(null)
@@ -44,9 +46,21 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         return true
     }
 
+    const validateFile = (file: File) => {
+        const allowedFormats = ["image/png", "image/jpeg", "image/jpg"];
+        if (file.size > 2097152 || !allowedFormats.includes(file.type)) {
+            return false
+        }
+        return true
+    }
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        if (!validateFile(file)) {
+            setIsImageName("Invalid file")
+            return
+        }
         setIsImageName(file.name) //TODO if name image large
         const reader = new FileReader();
         reader.onloadend = () => {
