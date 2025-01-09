@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Post } from '../../components/Post/Post';
 import { sendApiRequest } from '../../api/utils/request';
 import { IPost } from '../../data/_type';
-import { Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { AddPost } from '../../components/AddPost/AddPost';
-import { Close } from '@mui/icons-material';
 import { ActionPostType } from '../../components/AddPost/_type';
+import { DialogWindow } from '../../components/ui/DialogWindow';
 
 export const MyPosts = () => {
     const [openEditPost, setOpenEditPost] = useState<boolean>(false);
@@ -42,32 +42,14 @@ export const MyPosts = () => {
                 <Typography variant="h6" align="left">New post</Typography>
                 <AddPost action={ActionPostType.ADD_POST} />
             </Box>
-            {/* TODO component WindowEditPost */}
-            <Dialog
-                open={openEditPost as boolean}
-                onClose={() => setOpenEditPost(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                fullWidth={true}
-                maxWidth="sm"
-            >
-                <DialogTitle>Edit post</DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={() => setOpenEditPost(false)}
-                    sx={(theme) => ({ position: 'absolute', right: 8, top: 8, color: theme.palette.grey[500] })}
-                >
-                    <Close />
-                </IconButton>
-                <DialogContent>
-                    <AddPost
-                        action={ActionPostType.EDIT_POST}
-                        setOpenEditPost={setOpenEditPost}
-                        dataEditPost={dataEditPost}
-                        setDataEditPost={setDataEditPost}
-                    />
-                </DialogContent>
-            </Dialog>
+            <DialogWindow title='Edit post' open={openEditPost} setOpen={setOpenEditPost}>
+                <AddPost
+                    action={ActionPostType.EDIT_POST}
+                    setOpenEditPost={setOpenEditPost}
+                    dataEditPost={dataEditPost}
+                    setDataEditPost={setDataEditPost}
+                />
+            </DialogWindow>
             {data.map((post: IPost) => (
                 <Post
                     key={post.id}
