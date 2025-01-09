@@ -25,6 +25,11 @@ interface AddPostProps {
     setDataEditPost?: (value: IPost | null) => void;
 }
 
+enum ImageNameStatus {
+    INVALID_FILE = 'Invalid file',
+    IMAGE_LOADED = 'Image loaded',
+}
+
 // TODO Decompose the logic
 
 export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataEditPost, setDataEditPost }) => {
@@ -36,12 +41,12 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
 
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
-            setIsImageName(dataEditPost?.image ? "Image loaded" : false);
+            setIsImageName(dataEditPost?.image ? ImageNameStatus.IMAGE_LOADED : false);
         }
     }, [])
 
     const validateFormPost = (textField: string) => {
-        if (!isImageName || isImageName === 'Invalid file' && textField.length < 1) {
+        if (!isImageName || isImageName === ImageNameStatus.INVALID_FILE && textField.length < 1) {
             return false
         }
         return true
@@ -59,7 +64,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         const file = e.target.files?.[0];
         if (!file) return;
         if (!validateFile(file)) {
-            setIsImageName("Invalid file") //todo ts enum
+            setIsImageName(ImageNameStatus.INVALID_FILE)
             return
         }
         setIsImageName(file.name
@@ -75,7 +80,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
 
     const onPublish = (textField: string) => {
 
-        switch (action) { //TODO
+        switch (action) {
             case ActionPostType.ADD_POST:
                 sendApiRequest<IPost[]>('POST', `/posts`, {
                     id: uuid(8),
@@ -157,7 +162,11 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                     </Button>
                     {isImageName ? 
                         <Tooltip title="Сlick to delete" arrow>
-                            <Typography variant="caption" color="primary" onClick={() => setIsImageName(false)}>{isImageName}</Typography>
+                            <Typography 
+                                variant="caption" 
+                                color={isImageName === ImageNameStatus.INVALID_FILE ? "error" : "primary"} 
+                                onClick={() => setIsImageName(false)}>{isImageName}
+                            </Typography>
                         </Tooltip>
                         : 
                         <Typography variant="caption" color="textSecondary">Max size: 2mb - Format: jpg, jpeg, png</Typography>
