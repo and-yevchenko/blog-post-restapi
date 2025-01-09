@@ -41,7 +41,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
     }, [])
 
     const validateFormPost = (textField: string) => {
-        if (isImageName === false && textField.length < 1) {
+        if (!isImageName || isImageName === 'Invalid file' && textField.length < 1) {
             return false
         }
         return true
@@ -59,7 +59,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         const file = e.target.files?.[0];
         if (!file) return;
         if (!validateFile(file)) {
-            setIsImageName("Invalid file")
+            setIsImageName("Invalid file") //todo ts enum
             return
         }
         setIsImageName(file.name
