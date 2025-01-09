@@ -14,7 +14,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ comments }) => {
                 <ListItem key={comment.id} alignItems="flex-start" sx={{padding: '4px 16px'}}>
                     <ListItemText>
                         <Typography variant='body2' fontWeight='500'>{comment.nickname}</Typography>
-                        <Typography variant='body2'>{comment.comment}</Typography>
+                        <Typography variant='body2' sx={{textWrap: 'wrap', wordBreak: 'break-word'}}>{comment.comment}</Typography>
                     </ListItemText>
                 </ListItem>
             ))}
