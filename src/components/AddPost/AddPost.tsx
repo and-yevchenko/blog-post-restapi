@@ -85,7 +85,7 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                 sendApiRequest<IPost[]>('POST', `/posts`, {
                     id: uuid(8),
                     date: new Date().toISOString(),
-                    author: 'and.yevchenko',
+                    author: 'rob.jones',
                     text: textField as string,
                     image: imagePost ? imagePost : null,
                 });
