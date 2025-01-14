@@ -1,7 +1,7 @@
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://blog-post-server-mnzp.onrender.com';
 
 export const sendApiRequest = async <T>(method: Method, path: string, body?: Record<string, unknown>): Promise<T> => {
     const url =`${API_BASE_URL}${path}`

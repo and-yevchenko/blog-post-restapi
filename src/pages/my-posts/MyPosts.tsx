@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Post } from '../../components/Post/Post';
 import { sendApiRequest } from '../../api/utils/request';
-import { IPost } from '../../data/_type';
+import { IPost } from '../../api/utils/_type';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { AddPost } from '../../components/AddPost/AddPost';
 import { ActionPostType } from '../../components/AddPost/_type';
@@ -38,11 +38,20 @@ export const MyPosts = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'center' }}>
-            <Box sx={{ padding: '1rem', backgroundColor: 'white', borderRadius: '1rem', width: '600px'}}>
-                <Typography variant="h6" align="left">New post</Typography>
+            <Box
+                sx={{
+                    padding: '1rem',
+                    backgroundColor: 'white',
+                    borderRadius: '1rem',
+                    width: '600px',
+                }}
+            >
+                <Typography variant="h6" align="left">
+                    New post
+                </Typography>
                 <AddPost action={ActionPostType.ADD_POST} />
             </Box>
-            <DialogWindow title='Edit post' open={openEditPost} setOpen={setOpenEditPost}>
+            <DialogWindow title="Edit post" open={openEditPost} setOpen={setOpenEditPost}>
                 <AddPost
                     action={ActionPostType.EDIT_POST}
                     setOpenEditPost={setOpenEditPost}

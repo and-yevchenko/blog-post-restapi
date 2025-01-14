@@ -1,7 +1,7 @@
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IPost } from '../../data/_type';
+import { IPost } from '../../api/utils/_type';
 import { sendApiRequest } from '../../api/utils/request';
 
 interface MoreOptionsProps {
@@ -12,18 +12,23 @@ interface MoreOptionsProps {
 
 const options = ['Edit', 'Remove'];
 
-export const MoreOptions: React.FC<MoreOptionsProps> = ({ post, setOpenEditPost, setDataEditPost }) => {
+export const MoreOptions: React.FC<MoreOptionsProps> = ({
+    post,
+    setOpenEditPost,
+    setDataEditPost,
+}) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const onOpenOptions = (event: BaseSyntheticEvent) => {
         setAnchorEl(event.currentTarget);
     };
-    
+
     const onClickOption = (e: BaseSyntheticEvent) => {
         setAnchorEl(null);
         console.log(e.target.innerText);
-        if (e.target.innerText === 'Edit') { //TODO
+        if (e.target.innerText === 'Edit') {
+            //TODO
             setOpenEditPost(true);
             setDataEditPost(post);
         } else if (e.target.innerText === 'Remove') {
@@ -57,10 +62,7 @@ export const MoreOptions: React.FC<MoreOptionsProps> = ({ post, setOpenEditPost,
                 onClose={onClickOption}
             >
                 {options.map((option) => (
-                    <MenuItem
-                        key={option}
-                        onClick={onClickOption}
-                    >
+                    <MenuItem key={option} onClick={onClickOption}>
                         {option}
                     </MenuItem>
                 ))}

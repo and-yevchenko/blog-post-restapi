@@ -1,8 +1,14 @@
 import { Box, Checkbox, IconButton, Tooltip } from '@mui/material';
-import { Bookmark, BookmarkBorder, ChatBubbleOutline, Favorite, FavoriteBorder } from '@mui/icons-material';
+import {
+    Bookmark,
+    BookmarkBorder,
+    ChatBubbleOutline,
+    Favorite,
+    FavoriteBorder,
+} from '@mui/icons-material';
 import React, { BaseSyntheticEvent } from 'react';
 import { sendApiRequest } from '../../api/utils/request';
-import { IPost } from '../../data/_type';
+import { IPost } from '../../api/utils/_type';
 
 interface PostPanelProps {
     post: IPost;
@@ -10,27 +16,25 @@ interface PostPanelProps {
 }
 
 export const PostPanel: React.FC<PostPanelProps> = ({ post, focusElement }) => {
-
-    const handleLike = (e: BaseSyntheticEvent) => { //TODO
-        if(e.target.checked) {
+    const handleLike = (e: BaseSyntheticEvent) => {
+        //TODO
+        if (e.target.checked) {
             sendApiRequest<IPost[]>('PATCH', `/posts/${post.id}`, {
-                likes: [...(post.likes ?? []), post.author as string]
-            })
+                likes: [...(post.likes ?? []), post.author as string],
+            });
         } else {
             sendApiRequest<IPost[]>('PATCH', `/posts/${post.id}`, {
-                likes: post.likes ? post.likes.filter((like) => like !== post.author) : []
-            })
+                likes: post.likes ? post.likes.filter((like) => like !== post.author) : [],
+            });
         }
-    }
+    };
 
     const handleComment = () => {
-        focusElement?.current?.focus()
-    }
+        focusElement?.current?.focus();
+    };
 
     return (
-        <Box
-            sx={{ display: 'flex', alignItems: 'center', padding: '0.5rem', gap: '0.5rem' }}
-        >
+        <Box sx={{ display: 'flex', alignItems: 'center', padding: '0.5rem', gap: '0.5rem' }}>
             <Tooltip title="Like">
                 <Checkbox
                     aria-label="like"

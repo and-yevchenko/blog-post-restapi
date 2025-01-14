@@ -1,8 +1,17 @@
 import { Image } from '@mui/icons-material';
-import { Alert, Box, Button, Snackbar, styled, TextField, Tooltip, Typography } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Snackbar,
+    styled,
+    TextField,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ActionPostType } from './_type';
-import { IPost } from '../../data/_type';
+import { IPost } from '../../api/utils/_type';
 import { sendApiRequest } from '../../api/utils/request';
 import { uuid } from '../../utils/uuid';
 
@@ -32,54 +41,59 @@ enum ImageNameStatus {
 
 // TODO Decompose the logic
 
-export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataEditPost, setDataEditPost }) => {
-
-    const [imagePost, setImagePost] = useState<string | null>(null)
-    const [isImageName, setIsImageName] = useState<string | boolean>(false)
-    const [isValidForm, setIsValidForm] = useState<boolean>(false)
-    const [snackbarSuccessPost, setSnackbarSuccessPost] = useState<boolean>(false)
+export const AddPost: React.FC<AddPostProps> = ({
+    action,
+    setOpenEditPost,
+    dataEditPost,
+    setDataEditPost,
+}) => {
+    const [imagePost, setImagePost] = useState<string | null>(null);
+    const [isImageName, setIsImageName] = useState<string | boolean>(false);
+    const [isValidForm, setIsValidForm] = useState<boolean>(false);
+    const [snackbarSuccessPost, setSnackbarSuccessPost] = useState<boolean>(false);
 
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
             setIsImageName(dataEditPost?.image ? ImageNameStatus.IMAGE_LOADED : false);
         }
-    }, [])
+    }, []);
 
     const validateFormPost = (textField: string) => {
-        if (!isImageName || isImageName === ImageNameStatus.INVALID_FILE && textField.length < 1) {
-            return false
+        if (
+            (!isImageName && textField.length < 1) || (isImageName === ImageNameStatus.INVALID_FILE && textField.length < 1)
+        ) {
+            return false;
         }
-        return true
-    }
+        return true;
+    };
 
     const validateFile = (file: File) => {
-        const allowedFormats = ["image/png", "image/jpeg", "image/jpg"];
+        const allowedFormats = ['image/png', 'image/jpeg', 'image/jpg'];
         if (file.size > 2097152 || !allowedFormats.includes(file.type)) {
-            return false
+            return false;
         }
-        return true
-    }
+        return true;
+    };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (!validateFile(file)) {
-            setIsImageName(ImageNameStatus.INVALID_FILE)
-            return
+            setIsImageName(ImageNameStatus.INVALID_FILE);
+            return;
         }
-        setIsImageName(file.name
-                        .slice(0, file.name.lastIndexOf('.'))
-                        .slice(0, 10) 
-                        + `${file.name.length > 10 ? "..." + file.name.split('.').pop() : ""}`)
+        setIsImageName(
+            file.name.slice(0, file.name.lastIndexOf('.')).slice(0, 10) +
+                `${file.name.length > 10 ? '...' + file.name.split('.').pop() : ''}`,
+        );
         const reader = new FileReader();
         reader.onloadend = () => {
-        setImagePost(reader.result as string);
+            setImagePost(reader.result as string);
         };
         reader.readAsDataURL(file);
     };
 
     const onPublish = (textField: string) => {
-
         switch (action) {
             case ActionPostType.ADD_POST:
                 sendApiRequest<IPost[]>('POST', `/posts`, {
@@ -109,22 +123,22 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
         const formData = new FormData(e.currentTarget);
         const textField = formData.get('text-field');
 
-        setIsValidForm(validateFormPost(textField as string))
+        setIsValidForm(validateFormPost(textField as string));
         if (validateFormPost(textField as string)) {
-            onPublish(textField as string)
-        } else return
+            onPublish(textField as string);
+        } else return;
 
         if (setOpenEditPost) setOpenEditPost(false);
         if (setDataEditPost) setDataEditPost(null);
         if (imagePost) setImagePost(null);
-        setIsImageName(false)
-        setSnackbarSuccessPost(true)
+        setIsImageName(false);
+        setSnackbarSuccessPost(true);
         e.currentTarget.reset();
-    }
+    };
 
     return (
         <>
-            {action === ActionPostType.ADD_POST &&
+            {action === ActionPostType.ADD_POST && (
                 <Snackbar
                     open={snackbarSuccessPost}
                     autoHideDuration={5000}
@@ -135,11 +149,11 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                         severity="success"
                         variant="filled"
                         sx={{ width: '100%' }}
-                        >
+                    >
                         Here is a gentle confirmation that your action was successful.
                     </Alert>
                 </Snackbar>
-            }
+            )}
             <form className="add-post" onSubmit={onSubmit}>
                 <TextField
                     id="standard-multiline-static"
@@ -154,28 +168,42 @@ export const AddPost: React.FC<AddPostProps> = ({ action, setOpenEditPost, dataE
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
                     <Button component="label" role={undefined} tabIndex={-1} startIcon={<Image />}>
                         Upload image
-                        <FileInput
-                            type="file"
-                            onChange={handleImageChange}
-                            multiple
-                        />
+                        <FileInput type="file" onChange={handleImageChange} multiple />
                     </Button>
-                    {isImageName ? 
+                    {isImageName ? (
                         <Tooltip title="Сlick to delete" arrow>
-                            <Typography 
-                                variant="caption" 
-                                color={isImageName === ImageNameStatus.INVALID_FILE ? "error" : "primary"} 
-                                onClick={() => setIsImageName(false)}>{isImageName}
+                            <Typography
+                                variant="caption"
+                                color={
+                                    isImageName === ImageNameStatus.INVALID_FILE
+                                        ? 'error'
+                                        : 'primary'
+                                }
+                                onClick={() => setIsImageName(false)}
+                            >
+                                {isImageName}
                             </Typography>
                         </Tooltip>
-                        : 
-                        <Typography variant="caption" color="textSecondary">Max size: 2mb - Format: jpg, jpeg, png</Typography>
-                    }
+                    ) : (
+                        <Typography variant="caption" color="textSecondary">
+                            Max size: 2mb - Format: jpg, jpeg, png
+                        </Typography>
+                    )}
                 </Box>
                 <Box
-                    sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        marginTop: '1rem',
+                    }}
                 >
-                    {!isValidForm && <Typography variant="caption" color="error">Add text or images</Typography>}
+                    {!isValidForm && (
+                        <Typography variant="caption" color="error">
+                            Add text or images
+                        </Typography>
+                    )}
                     <Button variant="contained" color="primary" type="submit">
                         Publish
                     </Button>
