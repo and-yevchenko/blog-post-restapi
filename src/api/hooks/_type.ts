@@ -5,7 +5,6 @@ export enum FetchStatus {
     SUCCESS = 'success',
     ERROR = 'error',
 }
-export type FetchOptions = RequestInit;
 
 export type FetchResult<T> = {
     response: T | null;

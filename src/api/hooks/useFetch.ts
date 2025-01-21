@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { FetchOptions, FetchResult, FetchStatus } from './_type';
+import { FetchResult, FetchStatus } from './_type';
 
-export function useFetch<T>(url: string, options?: FetchOptions): FetchResult<T> {
+export function useFetch<T>(url: string): FetchResult<T> {
     const [status, setStatus] = useState<FetchStatus>(FetchStatus.FRESH);
     const [response, setResponse] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export function useFetch<T>(url: string, options?: FetchOptions): FetchResult<T>
                 setStatus(FetchStatus.SUCCESS);
             } else {
                 try {
-                    const response = await fetch(url, options);
+                    const response = await fetch(url, { method: 'GET' });
                     if (!response.ok) {
                         throw new Error(
                             `HTTP error! status: ${response.status}`,
@@ -38,7 +38,7 @@ export function useFetch<T>(url: string, options?: FetchOptions): FetchResult<T>
         }
 
         fetchData();
-    }, [url, options]);
+    }, [url, response]);
 
     return { status, response, error };
 }

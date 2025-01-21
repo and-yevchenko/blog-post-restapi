@@ -1,14 +1,5 @@
 import { Image } from '@mui/icons-material';
-import {
-    Alert,
-    Box,
-    Button,
-    Snackbar,
-    styled,
-    TextField,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Alert, Box, Button, Snackbar, styled, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ActionPostType } from './_type';
 import { IPost } from '../../api/utils/_type';
@@ -32,6 +23,7 @@ interface AddPostProps {
     setOpenEditPost?: (value: boolean) => void;
     dataEditPost?: IPost | null;
     setDataEditPost?: (value: IPost | null) => void;
+    setFetchTrigger: (value: number | ((prev: number) => number)) => void;
 }
 
 enum ImageNameStatus {
@@ -39,13 +31,12 @@ enum ImageNameStatus {
     IMAGE_LOADED = 'Image loaded',
 }
 
-// TODO Decompose the logic
-
 export const AddPost: React.FC<AddPostProps> = ({
     action,
     setOpenEditPost,
     dataEditPost,
     setDataEditPost,
+    setFetchTrigger
 }) => {
     const [imagePost, setImagePost] = useState<string | null>(null);
     const [isImageName, setIsImageName] = useState<string | boolean>(false);
@@ -55,8 +46,9 @@ export const AddPost: React.FC<AddPostProps> = ({
     useEffect(() => {
         if (action === ActionPostType.EDIT_POST) {
             setIsImageName(dataEditPost?.image ? ImageNameStatus.IMAGE_LOADED : false);
+            setImagePost(dataEditPost?.image ? dataEditPost.image : null)
         }
-    }, []);
+    }, [action, dataEditPost]);
 
     const validateFormPost = (textField: string) => {
         if (
@@ -93,7 +85,7 @@ export const AddPost: React.FC<AddPostProps> = ({
         reader.readAsDataURL(file);
     };
 
-    const onPublish = (textField: string) => {
+    const publicationRequest = (textField: string) => {
         switch (action) {
             case ActionPostType.ADD_POST:
                 sendApiRequest<IPost[]>('POST', `/posts`, {
@@ -102,7 +94,7 @@ export const AddPost: React.FC<AddPostProps> = ({
                     author: 'rob.jones',
                     text: textField as string,
                     image: imagePost ? imagePost : null,
-                });
+                }); //TODO ?answer?
                 break;
             case ActionPostType.EDIT_POST:
                 if (!dataEditPost) return;
@@ -110,13 +102,18 @@ export const AddPost: React.FC<AddPostProps> = ({
                     id: dataEditPost?.id,
                     date: new Date().toISOString(),
                     text: textField as string,
-                    image: imagePost ?? dataEditPost.image,
+                    image: imagePost ? imagePost : null,
                 });
                 break;
             default:
                 break;
         }
     };
+
+    const deleteImage = () => {
+        setIsImageName(false)
+        setImagePost(null)
+    }
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -125,9 +122,10 @@ export const AddPost: React.FC<AddPostProps> = ({
 
         setIsValidForm(validateFormPost(textField as string));
         if (validateFormPost(textField as string)) {
-            onPublish(textField as string);
+            publicationRequest(textField as string);
         } else return;
-
+                
+        setFetchTrigger((prev) => prev + 1)
         if (setOpenEditPost) setOpenEditPost(false);
         if (setDataEditPost) setDataEditPost(null);
         if (imagePost) setImagePost(null);
@@ -139,7 +137,7 @@ export const AddPost: React.FC<AddPostProps> = ({
     return (
         <>
             {action === ActionPostType.ADD_POST && (
-                <Snackbar
+                <Snackbar //TODO
                     open={snackbarSuccessPost}
                     autoHideDuration={5000}
                     onClose={() => setSnackbarSuccessPost(false)}
@@ -179,7 +177,7 @@ export const AddPost: React.FC<AddPostProps> = ({
                                         ? 'error'
                                         : 'primary'
                                 }
-                                onClick={() => setIsImageName(false)}
+                                onClick={deleteImage}
                             >
                                 {isImageName}
                             </Typography>

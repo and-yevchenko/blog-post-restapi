@@ -8,14 +8,16 @@ interface MoreOptionsProps {
     post: IPost;
     setOpenEditPost: (value: boolean) => void;
     setDataEditPost: (value: IPost | null) => void;
+    setFetchTrigger: (value: number | ((prev: number) => number)) => void;
 }
 
-const options = ['Edit', 'Remove'];
+const options = ['Edit', 'Remove']; //TODO
 
 export const MoreOptions: React.FC<MoreOptionsProps> = ({
     post,
     setOpenEditPost,
     setDataEditPost,
+    setFetchTrigger
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -39,6 +41,7 @@ export const MoreOptions: React.FC<MoreOptionsProps> = ({
                 .catch((error) => {
                     console.log(error.message);
                 });
+            setFetchTrigger((prev) => prev + 1)
         }
     };
 

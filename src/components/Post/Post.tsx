@@ -12,9 +12,10 @@ interface PostProps {
     post: IPost;
     setOpenEditPost: (value: boolean) => void;
     setDataEditPost: (value: IPost | null) => void;
+    setFetchTrigger: (value: number | ((prev: number) => number)) => void;
 }
 
-export const Post: React.FC<PostProps> = ({ post, setOpenEditPost, setDataEditPost }) => {
+export const Post: React.FC<PostProps> = ({ post, setOpenEditPost, setDataEditPost, setFetchTrigger }) => {
     const refForm = useRef<HTMLFormElement>(null);
 
     return (
@@ -25,6 +26,7 @@ export const Post: React.FC<PostProps> = ({ post, setOpenEditPost, setDataEditPo
                     post={post}
                     setOpenEditPost={setOpenEditPost}
                     setDataEditPost={setDataEditPost}
+                    setFetchTrigger={setFetchTrigger}
                 />
             </div>
             <div className="post-main">
@@ -38,7 +40,7 @@ export const Post: React.FC<PostProps> = ({ post, setOpenEditPost, setDataEditPo
                 {post.comments && (
                     <CommentsList {...(post.comments && { comments: post.comments })} />
                 )}
-                <AddComment post={post} ref={refForm} />
+                <AddComment post={post} setFetchTrigger={setFetchTrigger} ref={refForm} />
             </div>
         </div>
     );

@@ -8,10 +8,11 @@ import { uuid } from '../../utils/uuid';
 
 interface AddCommentProps {
     post: IPost;
+    setFetchTrigger: (value: number | ((prev: number) => number)) => void;
     ref?: React.RefObject<HTMLFormElement>;
 }
 
-export const AddComment = forwardRef<HTMLFormElement, AddCommentProps>(({ post }, ref) => {
+export const AddComment = forwardRef<HTMLFormElement, AddCommentProps>(({ post, setFetchTrigger }, ref) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -26,6 +27,7 @@ export const AddComment = forwardRef<HTMLFormElement, AddCommentProps>(({ post }
                 } as IComment,
             ],
         });
+        setFetchTrigger((prev) => prev + 1)
         e.currentTarget.reset();
     };
 
