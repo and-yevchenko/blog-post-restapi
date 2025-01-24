@@ -1,7 +1,7 @@
 import { Image } from '@mui/icons-material';
 import { Alert, Box, Button, Snackbar, styled, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { ActionPostType } from './_type';
+import { ActionPostType, ImageNameStatus } from './_type';
 import { IPost } from '../../api/utils/_type';
 import { sendApiRequest } from '../../api/utils/request';
 import { uuid } from '../../utils/uuid';
@@ -24,11 +24,6 @@ interface AddPostProps {
     dataEditPost?: IPost | null;
     setDataEditPost?: (value: IPost | null) => void;
     setFetchTrigger: (value: number | ((prev: number) => number)) => void;
-}
-
-enum ImageNameStatus {
-    INVALID_FILE = 'Invalid file',
-    IMAGE_LOADED = 'Image loaded',
 }
 
 export const AddPost: React.FC<AddPostProps> = ({
